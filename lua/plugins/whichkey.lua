@@ -1,3 +1,4 @@
+---@type LazySpec
 return {
   "folke/which-key.nvim",
   event = "VeryLazy",
@@ -9,9 +10,7 @@ return {
   keys = {
     {
       "<leader>K",
-      function()
-        require("which-key").show({ global = false })
-      end,
+      function() require("which-key").show { global = false } end,
       desc = "Buffer Local Keymaps (which-key)",
     },
   },
