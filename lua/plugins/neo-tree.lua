@@ -16,9 +16,5 @@ return {
       "<Leader>o",
       "<CMD>Neotree toggle<CR>",
     },
-    {
-      "<Leader>e",
-      "<CMD>Neotree<CR>",
-    },
   },
 }

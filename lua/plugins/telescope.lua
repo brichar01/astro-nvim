@@ -8,8 +8,13 @@ return {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
   keys = function()
-    local builtin = require "telescope.builtin"
+    local builtin = require("telescope.builtin")
     return {
+      {
+        "<leader>fg",
+        builtin.git_files,
+        desc = "Telescope git files",
+      },
       {
         "<leader>ff",
         builtin.find_files,

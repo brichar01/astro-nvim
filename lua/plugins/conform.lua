@@ -6,7 +6,7 @@ return {
     {
       -- Customize or remove this keymap to your liking
       "<leader>fm",
-      function() require("conform").format { async = true } end,
+      function() require("conform").format({ async = true }) end,
       mode = "",
       desc = "Format buffer",
     },
