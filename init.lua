@@ -1,5 +1,5 @@
 require("config.lazy")
-require("config.keys_extra")
+require("config.keymaps")
 
 -- Polish
 vim.diagnostic.config({ virtual_text = true })

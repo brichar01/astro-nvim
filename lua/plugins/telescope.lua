@@ -17,7 +17,7 @@ return {
       },
       {
         "<leader>ff",
-        builtin.find_files,
+        function() builtin.find_files({ find_command = { "rg", "--iglob", "!.git", "--hidden", "--files" } }) end,
         desc = "Telescope find files",
       },
       {
