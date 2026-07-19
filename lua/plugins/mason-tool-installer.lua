@@ -6,6 +6,8 @@ return {
       "lua_ls",
       "stylua",
       "black",
+      "clangd",
+      "clang-format",
     },
   },
 }
