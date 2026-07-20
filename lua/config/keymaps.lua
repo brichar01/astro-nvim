@@ -2,7 +2,8 @@
 
 vim.keymap.set("n", ";", ":")
 vim.keymap.set("n", "<Leader>w", "<Cmd>w<CR>", { desc = "Save, duh" })
-vim.keymap.set("n", "<Leader>q", "<Cmd>confirm q<CR>", { desc = "Quit Window" })
+vim.keymap.set("n", "<Leader>qq", "<Cmd>confirm q<CR>", { desc = "Quit Window" })
+vim.keymap.set("n", "<Leader>qb", "<Cmd>bdelete<CR>", { desc = "Close buffer" })
 vim.keymap.set("n", "<Leader>Q", "<Cmd>confirm qall<CR>", { desc = "Quit Nvim" })
 
 -- Clip board integration
