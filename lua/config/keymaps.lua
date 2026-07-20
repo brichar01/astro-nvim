@@ -17,3 +17,12 @@ vim.keymap.set("v", "<Leader>st", '"+p', { desc = "Replace selection from system
 
 vim.keymap.set("n", "<Leader>tt", "<Cmd>bNext<CR>", { desc = "Next tab" })
 vim.keymap.set("n", "<Leader>ts", "<Cmd>bNext<CR>", { desc = "Next tab" })
+
+-- Window stuff
+vim.keymap.set("n", "<C-left>", "<C-W>h", { desc = "Focus left window" })
+vim.keymap.set("n", "<C-right>", "<C-W>l", { desc = "Focus right window" })
+vim.keymap.set("n", "<C-up>", "<C-W>j", { desc = "Focus above window" })
+vim.keymap.set("n", "<C-down>", "<C-W>k", { desc = "Focus below window" })
+
+vim.keymap.set("n", "<C-<>", "<C-W><", { desc = "Decrease window width" })
+vim.keymap.set("n", "<C->>", "<C-W>>", { desc = "Increase window width" })
