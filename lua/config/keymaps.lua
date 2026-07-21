@@ -27,3 +27,7 @@ vim.keymap.set("n", "<C-down>", "<C-W>k", { desc = "Focus below window" })
 
 vim.keymap.set("n", "<C-<>", "<C-W><", { desc = "Decrease window width" })
 vim.keymap.set("n", "<C->>", "<C-W>>", { desc = "Increase window width" })
+
+-- Sneak
+vim.keymap.set({ "n", "x", "o" }, "f", "<Plug>(leap)")
+vim.keymap.set("n", "F", "<Plug>(leap-from-window)")
