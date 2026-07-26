@@ -8,9 +8,6 @@ return {
     "nvim-tree/nvim-web-devicons",
   },
   lazy = false,
-  ---@module neo-tree
-  ---@type neotree.Config
-  opts = {},
   keys = {
     {
       "<Leader>o",

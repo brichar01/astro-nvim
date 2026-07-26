@@ -3,8 +3,15 @@
 vim.keymap.set("n", ";", ":")
 vim.keymap.set("n", "<Leader>w", "<Cmd>w<CR>", { desc = "Save, duh" })
 vim.keymap.set("n", "<Leader>qq", "<Cmd>confirm q<CR>", { desc = "Quit Window" })
-vim.keymap.set("n", "<Leader>qb", "<Cmd>bdelete<CR>", { desc = "Close buffer" })
+vim.keymap.set(
+  "n",
+  "<Leader>qb",
+  function() require("mini.bufremove").delete(vim.api.nvim_get_current_buf(), false) end,
+  { desc = "Close buffer" }
+)
 vim.keymap.set("n", "<Leader>Q", "<Cmd>confirm qall<CR>", { desc = "Quit Nvim" })
+
+vim.keymap.set("n", "<Esc>", "<Cmd>noh<CR>", { desc = "Clear highlighting" })
 
 -- Clip board integration
 vim.keymap.set({ "n" }, "<Leader>sr", '"+dd', { desc = "Cut line to system clipboard" })
@@ -16,8 +23,8 @@ vim.keymap.set("v", "<Leader>ss", '"+y', { desc = "Copy line to system clipboard
 vim.keymap.set("n", "<Leader>st", '"+p', { desc = "Paste from system clipboard" })
 vim.keymap.set("v", "<Leader>st", '"+p', { desc = "Replace selection from system clipboard" })
 
-vim.keymap.set("n", "<Leader>tt", "<Cmd>bNext<CR>", { desc = "Next tab" })
-vim.keymap.set("n", "<Leader>ts", "<Cmd>bNext<CR>", { desc = "Next tab" })
+vim.keymap.set("n", "<Leader>tt", "<Cmd>bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<Leader>ts", "<Cmd>bprevious<CR>", { desc = "Previous Buffer" })
 
 -- Window stuff
 vim.keymap.set("n", "<C-left>", "<C-W>h", { desc = "Focus left window" })

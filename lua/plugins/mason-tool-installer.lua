@@ -5,9 +5,12 @@ return {
     ensure_installed = {
       "lua_ls",
       "stylua",
+      "pyright",
       "black",
       "clangd",
       "clang-format",
+      "prettier",
+      "tsgo",
     },
   },
 }
