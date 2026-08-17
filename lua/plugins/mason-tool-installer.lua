@@ -6,7 +6,6 @@ return {
       "lua_ls",
       "stylua",
       "pyright",
-      "black",
       "clangd",
       "clang-format",
       "prettier",

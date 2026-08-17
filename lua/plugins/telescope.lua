@@ -33,7 +33,12 @@ return {
       {
         "<leader>fh",
         builtin.help_tags,
-        desc = "Help",
+        desc = "Find Help files",
+      },
+      {
+        "<leader>fs",
+        builtin.lsp_dynamic_workspace_symbols,
+        desc = "Find symbols",
       },
     }
   end,
