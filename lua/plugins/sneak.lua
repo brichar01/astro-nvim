@@ -1,1 +1,1 @@
-return { url = "https://codeberg.org/andyg/leap.nvim", lazy = false }
+return { url = "git@codeberg.org:andyg/leap.nvim.git", lazy = false }

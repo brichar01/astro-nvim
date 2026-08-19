@@ -10,6 +10,7 @@ return {
       { path = "snacks.nvim", words = { "Snacks" } },
       { path = "lazy.nvim", words = { "LazyVim" } },
       { path = "nvim-lspconfig", words = { "lspconfig.settings" } },
+      "hive.nvim",
     },
   },
 }
