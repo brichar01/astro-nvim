@@ -13,29 +13,31 @@ km.set(
 km.set("n", "<Leader>Q", "<Cmd>confirm qall<CR>", { desc = "Quit Nvim" })
 
 km.set("n", "<Esc>", "<Cmd>noh<CR>", { desc = "Clear highlighting" })
-km.set("t", "<Esc>", "<C-\\><C-N>", { desc = "" })
+km.set("t", "<Esc>", "<C-\\><C-N>", { desc = "", noremap = true })
 
 -- Clip board integration
-km.set({ "n" }, "<Leader>sr", '"+dd', { desc = "Cut line to system clipboard" })
-km.set({ "v" }, "<Leader>sr", '"+d', { desc = "Cut visual selection to system clipboard" })
+km.set({ "n" }, "<Leader>sr", '"+dd', { desc = "Cut line to system clipboard", noremap = true })
+km.set({ "v" }, "<Leader>sr", '"+d', { desc = "Cut visual selection to system clipboard", noremap = true })
 
-km.set("n", "<Leader>ss", '"+yy', { desc = "Copy line to system clipboard" })
-km.set("v", "<Leader>ss", '"+y', { desc = "Copy line to system clipboard" })
+km.set("n", "<Leader>ss", '"+yy', { desc = "Copy line to system clipboard", noremap = true })
+km.set("v", "<Leader>ss", '"+y', { desc = "Copy line to system clipboard", noremap = true })
 
-km.set("n", "<Leader>st", '"+p', { desc = "Paste from system cipboard" })
-km.set("v", "<Leader>st", '"+p', { desc = "Replace selection from system clipboard" })
+km.set("n", "<Leader>st", '"+p', { desc = "Paste from system cipboard", noremap = true })
+km.set("v", "<Leader>st", '"+p', { desc = "Replace selection from system clipboard", noremap = true })
 
 km.set("n", "<Leader>tt", "<Cmd>bnext<CR>", { desc = "Next buffer" })
 km.set("n", "<Leader>ts", "<Cmd>bprevious<CR>", { desc = "Previous Buffer" })
 
 -- Window stuff
-km.set("n", "<C-left>", "<C-W>h", { desc = "Focus left window" })
-km.set("n", "<C-right>", "<C-W>l", { desc = "Focus right window" })
-km.set("n", "<C-up>", "<C-W>j", { desc = "Focus above window" })
-km.set("n", "<C-down>", "<C-W>k", { desc = "Focus below window" })
+km.set("n", "<C-left>", "<C-W>h", { desc = "Focus left window", noremap = true })
+km.set("n", "<C-right>", "<C-W>l", { desc = "Focus right window", noremap = true })
+km.set("n", "<C-up>", "<C-W>j", { desc = "Focus above window", noremap = true })
+km.set("n", "<C-down>", "<C-W>k", { desc = "Focus below window", noremap = true })
 
-km.set("n", "<C-<>", "<C-W><", { desc = "Decrease window width" })
-km.set("n", "<C->>", "<C-W>>", { desc = "Increase window width" })
+km.set("n", "<C-<>", "<C-W><", { desc = "Decrease window width", noremap = true })
+km.set("n", "<C->>", "<C-W>>", { desc = "Increase window width", noremap = true })
+
+km.set("n", "<Leader>nt", "<Cmd>vsplit | terminal<CR>", {})
 
 -- Sneak
 km.set({ "n", "x", "o" }, "f", "<Plug>(leap)")
@@ -96,3 +98,7 @@ km.set(
   function() return require("refactoring").select_refactor() end,
   { desc = "Select refactor" }
 )
+
+--- Mildly experimental
+vim.keymap.set("n", "<leader>ns", ":vsplit | Scratch<CR>", { silent = true })
+vim.keymap.set("n", "<leader>nw", ":vsplit | Workbench<CR>", { silent = true })
