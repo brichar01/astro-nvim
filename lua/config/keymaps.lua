@@ -102,3 +102,5 @@ km.set(
 --- Mildly experimental
 vim.keymap.set("n", "<leader>ns", ":vsplit | Scratch<CR>", { silent = true })
 vim.keymap.set("n", "<leader>nw", ":vsplit | Workbench<CR>", { silent = true })
+vim.keymap.set("v", "<leader>nr", ":Run<CR>", { silent = true })
+vim.keymap.set("n", "<leader>nr", "<Cmd>Run<CR>", { silent = true })

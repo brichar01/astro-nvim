@@ -33,3 +33,15 @@ vim.api.nvim_create_user_command("LuaOut", function(opts)
   local result = loadstring(opts.args)()
   if result then vim.api.nvim_buf_set_lines(0, -1, -1, false, { tostring(result) }) end
 end, { nargs = "+" })
+
+vim.api.nvim_create_user_command("Run", function(opts)
+  local lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
+
+  local result = vim.system({ vim.o.shell, "-c", table.concat(lines, "\n") }, { text = true }):wait()
+
+  local out = (result.stdout or "") .. (result.stderr or "")
+  out = out:gsub("\n$", "")
+  if out == "" then return end
+
+  vim.api.nvim_buf_set_lines(0, opts.line2, opts.line2, false, vim.split(out, "\n", { plain = true }))
+end, { range = true })
