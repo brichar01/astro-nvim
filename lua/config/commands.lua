@@ -34,14 +34,24 @@ vim.api.nvim_create_user_command("LuaOut", function(opts)
   if result then vim.api.nvim_buf_set_lines(0, -1, -1, false, { tostring(result) }) end
 end, { nargs = "+" })
 
+-- Run `cmd` through the shell and insert its output (stdout+stderr) below line `after`.
+local function insert_output(cmd, stdin, after)
+  local result = vim.system({ vim.o.shell, "-c", cmd }, { text = true, stdin = stdin }):wait()
+
+  local out = ((result.stdout or "") .. (result.stderr or "")):gsub("\n$", "")
+  if out == "" then return end
+
+  vim.api.nvim_buf_set_lines(0, after, after, false, vim.split(out, "\n", { plain = true }))
+end
+
 vim.api.nvim_create_user_command("Run", function(opts)
   local lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
 
-  local result = vim.system({ vim.o.shell, "-c", table.concat(lines, "\n") }, { text = true }):wait()
-
-  local out = (result.stdout or "") .. (result.stderr or "")
-  out = out:gsub("\n$", "")
-  if out == "" then return end
-
-  vim.api.nvim_buf_set_lines(0, opts.line2, opts.line2, false, vim.split(out, "\n", { plain = true }))
+  insert_output(table.concat(lines, "\n"), nil, opts.line2)
 end, { range = true })
+
+vim.api.nvim_create_user_command("Pipe", function(opts)
+  local lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
+
+  insert_output(opts.args, lines, opts.line2)
+end, { range = true, nargs = "+", complete = "shellcmd" })
