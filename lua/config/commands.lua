@@ -6,7 +6,7 @@ vim.api.nvim_create_user_command("Scratch", function()
   vim.bo.swapfile = false
 end, {})
 
-vim.api.nvim_create_user_command("Workbench", function()
+local function workbench_slug()
   local home = vim.uv.os_homedir()
   local cwd = vim.uv.cwd()
 
@@ -19,15 +19,55 @@ vim.api.nvim_create_user_command("Workbench", function()
   if rel == "" then rel = "home" end
 
   -- sanitise path
-  local slug = (rel:gsub("[^%w%.%-_]", "%%"))
+  return (rel:gsub("[^%w%.%-_]", "%%"))
+end
 
+local function workbench_dir()
   local dir = vim.fs.joinpath(vim.fn.stdpath("cache"), "workbenches")
   vim.fn.mkdir(dir, "p")
+  return dir
+end
 
-  vim.cmd.edit(vim.fn.fnameescape(vim.fs.joinpath(dir, slug .. ".wb")))
+local function open_workbench(path)
+  vim.cmd.edit(vim.fn.fnameescape(path))
   vim.bo.swapfile = false
   vim.bo.filetype = "markdown"
-end, {})
+end
+
+local function new_workbench()
+  local name = workbench_slug() .. "-" .. os.date("%Y%m%d%H%M%S") .. ".wb"
+
+  open_workbench(vim.fs.joinpath(workbench_dir(), name))
+end
+
+local function latest_workbench()
+  local existing = vim.fn.glob(vim.fs.joinpath(workbench_dir(), workbench_slug() .. "-*.wb"), false, true)
+  table.sort(existing)
+
+  return existing[#existing]
+end
+
+local workbench_actions = {
+  open = function()
+    local latest = latest_workbench()
+    if latest then
+      open_workbench(latest)
+    else
+      new_workbench()
+    end
+  end,
+  new = new_workbench,
+}
+
+vim.api.nvim_create_user_command("Workbench", function(opts)
+  local action = workbench_actions[opts.args]
+  if not action then error("unknown Workbench action: " .. opts.args) end
+
+  action()
+end, {
+  nargs = 1,
+  complete = function() return vim.tbl_keys(workbench_actions) end,
+})
 
 vim.api.nvim_create_user_command("LuaOut", function(opts)
   local result = loadstring(opts.args)()
