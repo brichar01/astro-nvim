@@ -84,14 +84,58 @@ local function insert_output(cmd, stdin, after)
   vim.api.nvim_buf_set_lines(0, after, after, false, vim.split(out, "\n", { plain = true }))
 end
 
+-- Run and append
 vim.api.nvim_create_user_command("Run", function(opts)
   local lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
 
   insert_output(table.concat(lines, "\n"), nil, opts.line2)
 end, { range = true })
 
+-- Pipe into command
 vim.api.nvim_create_user_command("Pipe", function(opts)
   local lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
 
   insert_output(opts.args, lines, opts.line2)
 end, { range = true, nargs = "+", complete = "shellcmd" })
+
+-- Copy `<path>:<line>` (or `<path>:<line1>-<line2>`) relative to the project root.
+vim.api.nvim_create_user_command("CopyRef", function(opts)
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then error("buffer has no file") end
+
+  local root = vim.uv.cwd()
+  if root == nil then error("no root") end
+  local path = vim.fs.relpath(root, file) or file
+
+  local ref = path .. ":" .. opts.line1
+  if opts.line2 > opts.line1 then ref = ref .. "-" .. opts.line2 end
+
+  vim.fn.setreg("+", ref)
+  vim.notify(ref)
+end, { range = true })
+
+-- just the relative file path
+vim.api.nvim_create_user_command("CopyRel", function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then error("buffer has no file") end
+
+  local root = vim.uv.cwd()
+  if root == nil then error("no root") end
+  local path = vim.fs.relpath(root, file) or file
+
+  local ref = path
+
+  vim.fn.setreg("+", ref)
+  vim.notify(ref)
+end, { range = true })
+
+-- Copy full path of current file
+vim.api.nvim_create_user_command("CopyFile", function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then error("buffer has no file") end
+
+  local path = vim.fs.path(file)
+
+  vim.fn.setreg("+", path)
+  vim.notify("Copied" .. path)
+end, { range = true })

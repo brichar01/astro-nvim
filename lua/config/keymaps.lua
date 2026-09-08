@@ -104,3 +104,13 @@ vim.keymap.set("n", "<leader>ns", ":vsplit | Scratch<CR>", { silent = true })
 vim.keymap.set("n", "<leader>nw", ":vsplit | Workbench open<CR>", { silent = true })
 vim.keymap.set("v", "<leader>nr", ":Run<CR>", { silent = true })
 vim.keymap.set("n", "<leader>nr", "<Cmd>Run<CR>", { silent = true })
+
+-- Copy filepaths
+vim.keymap.set({ "n", "v" }, "<leader>spr", "<Cmd>CopyRef<CR>", { silent = true })
+vim.keymap.set("x", "<leader>spr", ":CopyRef<CR>", { silent = true })
+
+vim.keymap.set({ "n", "v" }, "<leader>spf", "<Cmd>CopyRel<CR>", { silent = true })
+vim.keymap.set("x", "<leader>spf", ":CopyRel<CR>", { silent = true })
+
+vim.keymap.set({ "n", "v" }, "<leader>spp", "<Cmd>CopyPath<CR>", { silent = true })
+vim.keymap.set("x", "<leader>spp", ":CopyPath<CR>", { silent = true })
