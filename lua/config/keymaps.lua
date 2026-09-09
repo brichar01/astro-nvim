@@ -112,5 +112,5 @@ vim.keymap.set("x", "<leader>spr", ":CopyRef<CR>", { silent = true })
 vim.keymap.set({ "n", "v" }, "<leader>spf", "<Cmd>CopyRel<CR>", { silent = true })
 vim.keymap.set("x", "<leader>spf", ":CopyRel<CR>", { silent = true })
 
-vim.keymap.set({ "n", "v" }, "<leader>spp", "<Cmd>CopyPath<CR>", { silent = true })
-vim.keymap.set("x", "<leader>spp", ":CopyPath<CR>", { silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>spp", "<Cmd>CopyFile<CR>", { silent = true })
+vim.keymap.set("x", "<leader>spp", ":CopyFile<CR>", { silent = true })
