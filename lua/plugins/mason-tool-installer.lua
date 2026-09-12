@@ -10,6 +10,7 @@ return {
       "clang-format",
       "prettier",
       "tsgo",
+      "bash-language-server",
     },
   },
 }
