@@ -2,6 +2,7 @@ require("config.lazy")
 
 vim.opt.splitright = true
 require("config.commands")
+require("config.autocommands")
 require("config.keymaps")
 -- Polish this
 vim.diagnostic.config({ virtual_text = true })
