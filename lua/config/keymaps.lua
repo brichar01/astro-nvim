@@ -106,11 +106,26 @@ vim.keymap.set("v", "<leader>nr", ":Run<CR>", { silent = true })
 vim.keymap.set("n", "<leader>nr", "<Cmd>Run<CR>", { silent = true })
 
 -- Copy filepaths
-vim.keymap.set({ "n", "v" }, "<leader>spr", "<Cmd>CopyRef<CR>", { silent = true })
+vim.keymap.set({ "n" }, "<leader>spr", "<Cmd>CopyRef<CR>", { silent = true })
 vim.keymap.set("x", "<leader>spr", ":CopyRef<CR>", { silent = true })
 
-vim.keymap.set({ "n", "v" }, "<leader>spf", "<Cmd>CopyRel<CR>", { silent = true })
+vim.keymap.set({ "n" }, "<leader>spf", "<Cmd>CopyRel<CR>", { silent = true })
 vim.keymap.set("x", "<leader>spf", ":CopyRel<CR>", { silent = true })
 
-vim.keymap.set({ "n", "v" }, "<leader>spp", "<Cmd>CopyFile<CR>", { silent = true })
+vim.keymap.set({ "n" }, "<leader>spp", "<Cmd>CopyFile<CR>", { silent = true })
 vim.keymap.set("x", "<leader>spp", ":CopyFile<CR>", { silent = true })
+
+vim.keymap.set({ "n", "x" }, "vs<Left>", function()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local node =
+    require("utils.selection").parent_by_type({ "table_constructor", "function_declaration", "chunk" }, cursor)
+  if not node then error("no parent") end
+
+  local start_r, start_c, end_r, end_c = node:range()
+  print(start_r .. start_c .. end_r .. end_c)
+
+  vim.api.nvim_win_set_cursor(0, { start_r + 1, start_c })
+  vim.cmd("normal! v")
+  vim.api.nvim_win_set_cursor(0, { end_r, end_c })
+end, { desc = "Select current method, class, etc.", noremap = true })
+vim.keymap.set("x", "<C-Up>", function() end, { desc = "Expand to next method, class, etc.", noremap = true })

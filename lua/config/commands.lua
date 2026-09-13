@@ -45,3 +45,9 @@ vim.api.nvim_create_user_command("CopyFile", function()
   vim.fn.setreg("+", path)
   vim.notify("Copied" .. path)
 end, { range = true })
+
+vim.api.nvim_create_user_command("Reload", function(opts)
+  local module_name = opts.args
+  package.loaded[module_name] = nil
+  require(module_name)
+end, { nargs = 1 })
