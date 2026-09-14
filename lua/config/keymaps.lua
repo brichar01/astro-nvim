@@ -115,17 +115,32 @@ vim.keymap.set("x", "<leader>spf", ":CopyRel<CR>", { silent = true })
 vim.keymap.set({ "n" }, "<leader>spp", "<Cmd>CopyFile<CR>", { silent = true })
 vim.keymap.set("x", "<leader>spp", ":CopyFile<CR>", { silent = true })
 
+--- Select a node linewise, leaving the cursor on its last line.
+local function select_node(node)
+  local start_r, start_c, end_r, end_c = node:range()
+  if end_c == 0 then end_r = end_r - 1 end
+
+  if vim.fn.mode():match("[vV\22]") then vim.cmd("normal! \27") end
+  vim.api.nvim_win_set_cursor(0, { start_r + 1, start_c })
+  vim.cmd("normal! V")
+  vim.api.nvim_win_set_cursor(0, { end_r + 1, 0 })
+end
+
 vim.keymap.set({ "n", "x" }, "vs<Left>", function()
   local cursor = vim.api.nvim_win_get_cursor(0)
-  local node =
-    require("utils.selection").parent_by_type({ "table_constructor", "function_declaration", "chunk" }, cursor)
+  local selection = require("utils.selection")
+  local node = selection.parent_by_type(selection.types_for(), cursor)
   if not node then error("no parent") end
 
-  local start_r, start_c, end_r, end_c = node:range()
-  print(start_r .. start_c .. end_r .. end_c)
-
-  vim.api.nvim_win_set_cursor(0, { start_r + 1, start_c })
-  vim.cmd("normal! v")
-  vim.api.nvim_win_set_cursor(0, { end_r, end_c })
+  select_node(node)
 end, { desc = "Select current method, class, etc.", noremap = true })
-vim.keymap.set("x", "<C-Up>", function() end, { desc = "Expand to next method, class, etc.", noremap = true })
+
+vim.api.nvim_create_user_command("SelectionExpand", function(opts)
+  local selection = require("utils.selection")
+  local node = selection.parent_by_type(selection.types_for(), { opts.line1, 0 })
+  if not node then error("no parent") end
+
+  select_node(node)
+end, { range = true })
+
+vim.keymap.set("x", "<C-Left>", ":SelectionExpand<CR>", { desc = "Expand to next method, class, etc.", noremap = true })
