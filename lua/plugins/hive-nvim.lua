@@ -1,15 +1,29 @@
--- Install and configure your plugin during development
 return {
   "hive.nvim",
-  dir = "/home/benri/junk/hive.nvim", -- So we are using the local version of the plugin
-  branch = "main", -- Select the branch of the plugin to use
+  dir = "/home/benri/src/hive.nvim",
+  main = "hive",
   lazy = false,
-  opts = {},
+  opts = {
+    base_url = "https://api.mistral.ai",
+    model = "codestral-latest",
+    api_key_env = "MISTRAL_API_KEY",
+    api_key = function()
+      if vim.fn.executable("secret-tool") ~= 1 then return nil end
+
+      local out = vim
+        .system({ "secret-tool", "lookup", "service", "mistral", "key", "api" }, { text = true, timeout = 10000 })
+        :wait()
+      if out.code ~= 0 then return nil end
+
+      local key = vim.trim(out.stdout or "")
+      return key ~= "" and key or nil
+    end,
+  },
   keys = {
     {
-      "<leader>rb", -- Choose a key binding for reloading the plugin
+      "<leader>rb",
       "<cmd>Lazy reload hive.nvim<cr>",
-      desc = "Reload your-plugin.nvim",
+      desc = "Reload hive.nvim",
       mode = { "n", "v" },
     },
   },
