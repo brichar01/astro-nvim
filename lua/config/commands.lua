@@ -51,3 +51,47 @@ vim.api.nvim_create_user_command("Reload", function(opts)
   package.loaded[module_name] = nil
   require(module_name)
 end, { nargs = 1 })
+
+-- Selection by treesitter node
+local function select_command(kind, visual)
+  return function(opts)
+    local selection = require("utils.selection")
+    local pos = opts.range > 0 and { opts.line1, 0 } or vim.api.nvim_win_get_cursor(0)
+    local node = selection.parent_by_type(selection.types_for_kind(kind), pos)
+    if node then selection.select_node(node, visual) end
+  end
+end
+
+vim.api.nvim_create_user_command("SelectionExpand", function(opts)
+  local selection = require("utils.selection")
+  local node = selection.parent_by_type(selection.types_for(), { opts.line1, 0 })
+  if not node then error("no parent") end
+
+  selection.select_node(node)
+end, { range = true })
+
+vim.api.nvim_create_user_command("SelectCall", select_command("call", "v"), { range = true })
+vim.api.nvim_create_user_command("SelectMethod", select_command("method"), { range = true })
+vim.api.nvim_create_user_command("SelectClass", select_command("class"), { range = true })
+
+-- Append the nearest function to the workbench, split at the cursor as a FIM prompt.
+local fim_markers = { prefix = "<|fim_prefix|>", suffix = "<|fim_suffix|>" }
+
+vim.api.nvim_create_user_command("WorkbenchFim", function()
+  local selection = require("utils.selection")
+  local pos = vim.api.nvim_win_get_cursor(0)
+  local node = selection.parent_by_type(selection.types_for_kind("method"), pos)
+  if not node then error("no function at the cursor") end
+
+  local prefix, suffix = require("utils.formatting").split_at_cursor(pos, node, 0, fim_markers)
+  if not prefix then error("cursor outside the function") end
+
+  local start_r, _, end_r, end_c = node:range()
+  if end_c == 0 then end_r = end_r - 1 end
+  local lines = { require("utils.path").relative_with_line(start_r + 1, end_r + 1) }
+  vim.list_extend(lines, suffix or {})
+  vim.list_extend(lines, prefix)
+
+  vim.fn.writefile(lines, require("utils.workbench").current(), "a")
+  vim.cmd.checktime()
+end, {})
